@@ -12,7 +12,6 @@
 		D423859D269DA39A0003A7B6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D423859C269DA39A0003A7B6 /* ViewController.swift */; };
 		D42385A2269DA39C0003A7B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D42385A1269DA39C0003A7B6 /* Assets.xcassets */; };
 		D42385A5269DA39C0003A7B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D42385A3269DA39C0003A7B6 /* LaunchScreen.storyboard */; };
-		D42385B0269DB0D60003A7B6 /* AddingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42385AF269DB0D60003A7B6 /* AddingTimer.swift */; };
 		D42385B2269DE3300003A7B6 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42385B1269DE3300003A7B6 /* HeaderView.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +23,6 @@
 		D42385A1269DA39C0003A7B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D42385A4269DA39C0003A7B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D42385A6269DA39C0003A7B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D42385AF269DB0D60003A7B6 /* AddingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingTimer.swift; sourceTree = "<group>"; };
 		D42385B1269DE3300003A7B6 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,7 +86,6 @@
 		D42385AE269DB0B20003A7B6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D42385AF269DB0D60003A7B6 /* AddingTimer.swift */,
 				D42385B1269DE3300003A7B6 /* HeaderView.swift */,
 			);
 			path = Views;
@@ -164,7 +161,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D42385B2269DE3300003A7B6 /* HeaderView.swift in Sources */,
-				D42385B0269DB0D60003A7B6 /* AddingTimer.swift in Sources */,
 				D423859D269DA39A0003A7B6 /* ViewController.swift in Sources */,
 				D4238599269DA39A0003A7B6 /* AppDelegate.swift in Sources */,
 				D423859B269DA39A0003A7B6 /* SceneDelegate.swift in Sources */,

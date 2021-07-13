@@ -33,7 +33,7 @@ class HeaderView: UIView {
         self.addSubview(headerTitle)
         
         let bottomBorder = CALayer()
-        bottomBorder.frame = CGRect(x: 0.0, y: 50.0, width: bounds.width, height: 0.5)
+        bottomBorder.frame = CGRect(x: 0.0, y: 47.0, width: bounds.width, height: 0.5)
         bottomBorder.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
         self.layer.addSublayer(bottomBorder)
         
