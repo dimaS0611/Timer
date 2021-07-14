@@ -136,6 +136,18 @@ extension TimerViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.text = ""
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let maxLength = 20
+        let currentString = (textField.text ?? "") as NSString
+        let newString =
+                currentString.replacingCharacters(in: range, with: string) as NSString
+        return newString.length <= maxLength
+    }
 }
 
 // MARK: -Alert
