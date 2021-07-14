@@ -10,16 +10,10 @@ import UIKit
 
 // MARK: - UITableViewDelegate
 extension TimerViewController: UITableViewDelegate {
+   
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell else {
             return
-        }
-        
-        if timers[indexPath.row].isTimerRunning {
-            timer?.invalidate()
-            timer = nil
-        } else {
-            createTimer()
         }
         
         cell.updateState()
@@ -28,6 +22,7 @@ extension TimerViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension TimerViewController: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         timers.count
     }
@@ -47,64 +42,110 @@ extension TimerViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - Actions
+// MARK: - Adding timer
 extension TimerViewController {
-  @objc func addTimer() {
-    createTimer()
-
-    let name = timerNameTextField.text ?? "Timer"
-    if let duration = Int(timerDurationTextField.text ?? "0") {
+  
+    @objc func addTimer() {
+        createTimer()
         
-      DispatchQueue.main.async {
-        let timer = TimerModel(name: name, duration: duration)
+        let name = timerNameTextField.text ?? "Timer"
         
-        self.timers.append(timer)
+        if name == "" {
+            showAlertWith(title: "Failed to add new timer", message: "Timer's name cannot be empty")
+            return
+        }
         
-        let indexPath = IndexPath(row: self.timers.count - 1, section: 0)
-        
-        self.tableView.beginUpdates()
-        self.tableView.insertRows(at: [indexPath], with: .top)
-        self.tableView.endUpdates()
-      }
-    } else {
-        let alertController = UIAlertController(title: "Failed to add new timer", message: "", preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        
-        alertController.addAction(alertAction)
-        
-        present(alertController, animated: true, completion: nil)
+        if let duration = Int(timerDurationTextField.text ?? "0") {
+            DispatchQueue.main.async {
+                let timer = TimerModel(name: name, duration: duration)
+                
+                self.timers.append(timer)
+            
+                self.timers.sort(by: { $0.duration > $1.duration })
+            
+                let indexPath = IndexPath(row: self.timers.count - 1, section: 0)
+                
+                self.tableView.beginUpdates()
+                self.tableView.insertRows(at: [indexPath], with: .top)
+                self.tableView.endUpdates()
+            }
+        } else {
+            showAlertWith(title: "Failed to add new timer", message: "Timer's duration is incorrect")
+        }
     }
-    
-  }
 }
 
 // MARK: - Timer
 extension TimerViewController {
-  func createTimer() {
-    if timer == nil {
-      let timer = Timer(timeInterval: 1.0,
-        target: self,
-        selector: #selector(updateTimer),
-        userInfo: nil,
-        repeats: true)
-      RunLoop.current.add(timer, forMode: .common)
-      timer.tolerance = 0.1
-      
-      self.timer = timer
-    }
-  }
-  
-  @objc func updateTimer() {
-    guard let visibleRowsIndexPaths = tableView.indexPathsForVisibleRows else {
-      return
+   
+    func createTimer() {
+        if timer == nil {
+            let timer = Timer(timeInterval: 1.0,
+                              target: self,
+                              selector: #selector(updateTimer),
+                              userInfo: nil,
+                              repeats: true)
+            RunLoop.current.add(timer, forMode: .common)
+            timer.tolerance = 0.1
+            
+            self.timer = timer
+        }
     }
     
-    for indexPath in visibleRowsIndexPaths {
-      if let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell {
-        cell.updateTime()
-      }
+    @objc func updateTimer() {
+        guard let visibleRowsIndexPaths = tableView.indexPathsForVisibleRows else {
+            return
+        }
+        
+        for indexPath in visibleRowsIndexPaths {
+            if let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell {
+                cell.updateTime()
+            }
+        }
+        
+        deleteTimerIfNeeded()
     }
-  }
+}
+
+// MARK: -Deletting timer
+extension TimerViewController {
+    
+    func deleteTimerIfNeeded() {
+        for i in 0..<timers.count {
+            if (timers[safe: i]?.duration ?? 1) <= 0 {
+                timers.remove(at: i)
+                let indexPath = IndexPath(item: i, section: 0)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+}
+
+//MARK: -TextFieldDelegate
+extension TimerViewController: UITextFieldDelegate {
+   
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+// MARK: -Alert
+extension TimerViewController {
+    
+    func showAlertWith(title: String, message: String) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+        present(ac, animated: true)
+    }
 }
 
 

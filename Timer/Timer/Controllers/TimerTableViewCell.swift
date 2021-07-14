@@ -9,7 +9,6 @@ import UIKit
 
 class TimerTableViewCell: UITableViewCell {
     
-    
     private let timerValueLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -18,7 +17,7 @@ class TimerTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let timerName: UILabel = {
+    private let timerNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 15)
@@ -26,12 +25,9 @@ class TimerTableViewCell: UITableViewCell {
         return label
     }()
     
-    var time = 0
-    
     var timer: TimerModel? {
         didSet {
-            timerName.text = timer?.name
-            time = timer?.duration ?? 0
+            timerNameLabel.text = timer?.name
             timer?.isTimerRunning = true
             
             updateTime()
@@ -42,12 +38,14 @@ class TimerTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         addSubview(timerValueLabel)
-        addSubview(timerName)
+        addSubview(timerNameLabel)
         
-        timerName.translatesAutoresizingMaskIntoConstraints = false
-        timerName.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        timerName.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        // layout of timer name label
+        timerNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        timerNameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        timerNameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
         
+        // layout of timer value label
         timerValueLabel.translatesAutoresizingMaskIntoConstraints = false
         timerValueLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         timerValueLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
@@ -61,7 +59,6 @@ class TimerTableViewCell: UITableViewCell {
         guard let timer = timer else {
             return
         }
-        
         timer.isTimerRunning.toggle()
         
         updateTime()
@@ -73,7 +70,9 @@ class TimerTableViewCell: UITableViewCell {
         }
         
         if timer.isTimerRunning {
-            time -= 1
+            timer.duration -= 1
+            
+            let time = timer.duration
             
             if time >= 0 {
                 let hours = time / 3600
@@ -81,12 +80,19 @@ class TimerTableViewCell: UITableViewCell {
                 let seconds = time % 60
                 
                 var times: [String] = []
-                if hours > 0 {
+                
+                if hours < 10 {
+                    times.append("0\(hours)")
+                } else {
                     times.append("\(hours)")
                 }
-                if minutes > 0 {
+                
+                if minutes < 10 {
+                    times.append("0\(minutes)")
+                } else {
                     times.append("\(minutes)")
                 }
+                
                 times.append("\(seconds)")
                 
                 timerValueLabel.text = times.joined(separator: " : ")
@@ -96,6 +102,5 @@ class TimerTableViewCell: UITableViewCell {
         } else {
             timerValueLabel.text = "Paused"
         }
-        
     }
 }

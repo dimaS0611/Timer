@@ -16,6 +16,7 @@
 		D42385B5269E067B0003A7B6 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42385B4269E067B0003A7B6 /* TimerModel.swift */; };
 		D42385B8269E174C0003A7B6 /* TimerViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42385B7269E174C0003A7B6 /* TimerViewController+Extension.swift */; };
 		D42385BA269E18BD0003A7B6 /* TimerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42385B9269E18BD0003A7B6 /* TimerTableViewCell.swift */; };
+		D42385BC269F3E070003A7B6 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42385BB269F3E070003A7B6 /* Collection+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		D42385B4269E067B0003A7B6 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		D42385B7269E174C0003A7B6 /* TimerViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimerViewController+Extension.swift"; sourceTree = "<group>"; };
 		D42385B9269E18BD0003A7B6 /* TimerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTableViewCell.swift; sourceTree = "<group>"; };
+		D42385BB269F3E070003A7B6 /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Collection+Extension.swift"; path = "../../../../../../../Collection+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				D423859C269DA39A0003A7B6 /* TimerViewController.swift */,
+				D42385B9269E18BD0003A7B6 /* TimerTableViewCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -95,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				D42385B1269DE3300003A7B6 /* HeaderView.swift */,
-				D42385B9269E18BD0003A7B6 /* TimerTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -112,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				D42385B7269E174C0003A7B6 /* TimerViewController+Extension.swift */,
+				D42385BB269F3E070003A7B6 /* Collection+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				D42385BA269E18BD0003A7B6 /* TimerTableViewCell.swift in Sources */,
 				D42385B8269E174C0003A7B6 /* TimerViewController+Extension.swift in Sources */,
 				D423859B269DA39A0003A7B6 /* SceneDelegate.swift in Sources */,
+				D42385BC269F3E070003A7B6 /* Collection+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
