@@ -63,7 +63,6 @@ class TimerTableViewCell: UITableViewCell {
         if timer.isTimerRunning {
             timer.duration -= 0.1
             
-            
             if timer.duration >= 0 {
                 let flooredTimer = Int(floor(timer.duration))
                 

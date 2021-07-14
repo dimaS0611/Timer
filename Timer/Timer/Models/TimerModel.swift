@@ -8,7 +8,7 @@
 import Foundation
 
 class TimerModel: Equatable {
-
+    
     var name: String
     var duration: Double = 0.0
     var isTimerRunning = false
@@ -19,7 +19,7 @@ class TimerModel: Equatable {
     }
     
     static func == (lhs: TimerModel, rhs: TimerModel) -> Bool {
-        if lhs.hashValue == rhs.hashValue {
+        if lhs.name == rhs.name && lhs.duration == rhs.duration && lhs.isTimerRunning == rhs.isTimerRunning && lhs.hashValue == rhs.hashValue {
             return true
         } else {
             return false
