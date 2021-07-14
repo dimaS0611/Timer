@@ -16,8 +16,7 @@ extension TimerViewController: UITableViewDelegate {
             return
         }
         
-            cell.updateState()
-        
+        cell.timer?.isTimerRunning.toggle()
     }
 }
 
@@ -57,19 +56,20 @@ extension TimerViewController {
         }
         
         if let duration = Int(timerDurationTextField.text ?? "0") {
-            DispatchQueue.main.async {
                 let timer = TimerModel(name: name, duration: duration)
                 
-                self.timers.append(timer)
-                
-                self.timers.sort(by: { $0.duration > $1.duration })
-                
-                let indexPath = IndexPath(row: self.timers.count - 1, section: 0)
-                
+            let indexPath: IndexPath
+            
+            if let idx = self.timers.firstIndex(where: { $0.duration <= timer.duration }) {
+                self.timers.insert(timer, at: idx)
+                indexPath = IndexPath(row: idx, section: 0)
+            } else {
+                timers.append(timer)
+                 indexPath = IndexPath(row: timers.count - 1, section: 0)
+            }
                 self.tableView.beginUpdates()
                 self.tableView.insertRows(at: [indexPath], with: .top)
                 self.tableView.endUpdates()
-            }
         } else {
             showAlertWith(title: "Failed to add new timer", message: "Timer's duration is incorrect")
         }
@@ -102,19 +102,21 @@ extension TimerViewController {
             if let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell {
                 cell.updateTime()
                 
-                var deleteIndexPath: [IndexPath] = []
-                if (cell.timer?.duration ?? 1) <= 0 {
-                    let rowIdx = self.timers.firstIndex(where: { $0 == cell.timer && !$0.isTimerRunning })
-                    self.timers.remove(at: rowIdx ?? 0)
-                    deleteIndexPath.append(IndexPath(row: rowIdx ?? 0, section: 0))
+                if (cell.timer?.duration ?? 0) <= 0 {
+                  
+                    self.timers.remove(at: indexPath.row)
                     
                     self.tableView.beginUpdates()
-                    self.tableView.deleteRows(at: deleteIndexPath, with: .right)
+                    self.tableView.deleteRows(at: [indexPath], with: .right)
                     self.tableView.endUpdates()
+                    
+                    if timers.count == 0 {
+                        timer?.invalidate()
+                        timer = nil
+                    }
                 }
             }
         }
-        
     }
 }
 

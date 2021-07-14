@@ -55,15 +55,6 @@ class TimerTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateState() {
-        guard let timer = timer else {
-            return
-        }
-        timer.isTimerRunning.toggle()
-        
-        updateTime()
-    }
-    
     func updateTime() {
         guard let timer = timer else {
             return
@@ -72,10 +63,13 @@ class TimerTableViewCell: UITableViewCell {
         if timer.isTimerRunning {
             timer.duration -= 0.1
             
+            
             if timer.duration >= 0 {
-                let hours = Int(timer.duration) / 3600
-                let minutes = Int(timer.duration) / 60 % 60
-                let seconds = Int(timer.duration) % 60
+                let flooredTimer = Int(floor(timer.duration))
+                
+                let hours = flooredTimer / 3600
+                let minutes = (flooredTimer % 3600) / 60
+                let seconds = (flooredTimer % 3600) % 60
                 
                 var times: [String] = []
                 
