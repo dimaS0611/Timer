@@ -10,9 +10,8 @@ import UIKit
 class HeaderView: UIView {
     
     var title: String
-
+    
     init(frame: CGRect, title: String) {
-        
         self.title = title
         super.init(frame: frame)
         

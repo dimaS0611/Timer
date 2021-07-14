@@ -10,6 +10,7 @@ import UIKit
 
 // MARK: - UITableViewDelegate
 extension TimerViewController: UITableViewDelegate {
+   
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell else {
             return
@@ -21,6 +22,7 @@ extension TimerViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension TimerViewController: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         timers.count
     }
@@ -40,12 +42,18 @@ extension TimerViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - Actions
+// MARK: - Adding timer
 extension TimerViewController {
+  
     @objc func addTimer() {
         createTimer()
         
-        let name = timerNameTextField.text ?? "Timer"
+        var name = timerNameTextField.text ?? "Timer"
+        
+        if name == "" {
+            name = "Timer"
+        }
+        
         if let duration = Int(timerDurationTextField.text ?? "0") {
             
             DispatchQueue.main.async {
@@ -60,7 +68,7 @@ extension TimerViewController {
                 self.tableView.endUpdates()
             }
         } else {
-            let alertController = UIAlertController(title: "Failed to add new timer", message: "", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Failed to add new timer", message: "The timer's time is incorrect", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             
             alertController.addAction(alertAction)
@@ -73,6 +81,7 @@ extension TimerViewController {
 
 // MARK: - Timer
 extension TimerViewController {
+   
     func createTimer() {
         if timer == nil {
             let timer = Timer(timeInterval: 1.0,
@@ -102,7 +111,9 @@ extension TimerViewController {
     }
 }
 
+// MARK: -Deletting timer
 extension TimerViewController {
+    
     func deleteTimerIfNeeded() {
         for i in 0..<timers.count {
             if (timers[safe: i]?.duration ?? 1) <= 0 {

@@ -8,7 +8,7 @@
 import Foundation
 
 class TimerModel {
-    
+
     var name: String
     var duration: Int = 0
     var isTimerRunning = false
