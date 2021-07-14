@@ -7,18 +7,28 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class TimerViewController: UIViewController {
 
     var addTimerView: UIView!
     var timersTableView: UIView!
     
+    let timerNameTextField = UITextField()
+    let timerDurationTextField = UITextField()
+    
+    let tableView = UITableView()
+    
     var safeArea: UILayoutGuide!
+    
+    var timers: [TimerModel] = []
+    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        title = "Timer"
+        self.tableView.register(TimerTableViewCell.self, forCellReuseIdentifier: "TimerCell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        title = "Мульти таймер"
         safeArea = view.layoutMarginsGuide
         
         setupAddingTimerView()
@@ -34,12 +44,10 @@ class ViewController: UIViewController {
         let header = HeaderView(frame: CGRect(x: 0, y: 10, width: view.bounds.width, height: 20), title: "Добавление таймеров")
         addTimerView.addSubview(header)
         
-        let timerNameTextField = UITextField()
         timerNameTextField.placeholder = "Название таймера"
         timerNameTextField.borderStyle = UITextField.BorderStyle.roundedRect
         addTimerView.addSubview(timerNameTextField)
         
-        let timerDurationTextField = UITextField()
         timerDurationTextField.placeholder = "Время в секундах"
         timerDurationTextField.borderStyle = UITextField.BorderStyle.roundedRect
         addTimerView.addSubview(timerDurationTextField)
@@ -48,6 +56,7 @@ class ViewController: UIViewController {
         addButton.backgroundColor = UIColor.systemGray6
         addButton.layer.cornerRadius = 10
         addButton.setTitle("Добавить", for: UIControl.State.normal)
+        addButton.addTarget(self, action: #selector(addTimer), for: .touchUpInside)
         addTimerView.addSubview(addButton)
 
         addTimerView.translatesAutoresizingMaskIntoConstraints = false
@@ -91,7 +100,6 @@ class ViewController: UIViewController {
         let header = HeaderView(frame: CGRect(x: 0, y: 10, width: view.bounds.width, height: 20), title: "Таймеры")
         timersTableView.addSubview(header)
         
-        let tableView = UITableView()
         timersTableView.addSubview(tableView)
         
         timersTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -110,5 +118,6 @@ class ViewController: UIViewController {
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: timersTableView.bottomAnchor).isActive = true
     }
+
 }
 
