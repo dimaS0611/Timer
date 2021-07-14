@@ -16,7 +16,7 @@ extension TimerViewController: UITableViewDelegate {
             return
         }
         
-        cell.updateState()
+        cell.timer?.isTimerRunning.toggle()
     }
 }
 
@@ -56,19 +56,20 @@ extension TimerViewController {
         }
         
         if let duration = Int(timerDurationTextField.text ?? "0") {
-            DispatchQueue.main.async {
-                let timer = TimerModel(name: name, duration: duration)
-                
-                self.timers.append(timer)
-                
-                self.timers.sort(by: { $0.duration > $1.duration })
-                
-                let indexPath = IndexPath(row: self.timers.count - 1, section: 0)
-                
-                self.tableView.beginUpdates()
-                self.tableView.insertRows(at: [indexPath], with: .top)
-                self.tableView.endUpdates()
+            let timer = TimerModel(name: name, duration: duration)
+            
+            let indexPath: IndexPath
+            
+            if let idx = self.timers.firstIndex(where: { $0.duration <= timer.duration }) {
+                self.timers.insert(timer, at: idx)
+                indexPath = IndexPath(row: idx, section: 0)
+            } else {
+                timers.append(timer)
+                indexPath = IndexPath(row: timers.count - 1, section: 0)
             }
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: [indexPath], with: .top)
+            self.tableView.endUpdates()
         } else {
             showAlertWith(title: "Failed to add new timer", message: "Timer's duration is incorrect")
         }
@@ -80,7 +81,7 @@ extension TimerViewController {
     
     func createTimer() {
         if timer == nil {
-            let timer = Timer(timeInterval: 1.0,
+            let timer = Timer(timeInterval: 0.1,
                               target: self,
                               selector: #selector(updateTimer),
                               userInfo: nil,
@@ -100,27 +101,21 @@ extension TimerViewController {
         for indexPath in visibleRowsIndexPaths {
             if let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell {
                 cell.updateTime()
+                
+                if (cell.timer?.duration ?? 0) <= 0 {
+                    
+                    self.timers.remove(at: indexPath.row)
+                    
+                    self.tableView.beginUpdates()
+                    self.tableView.deleteRows(at: [indexPath], with: .right)
+                    self.tableView.endUpdates()
+                    
+                    if timers.count == 0 {
+                        timer?.invalidate()
+                        timer = nil
+                    }
+                }
             }
-        }
-        
-        deleteTimerIfNeeded()
-    }
-}
-
-// MARK: -Deletting timer
-extension TimerViewController {
-    
-    func deleteTimerIfNeeded() {
-        for i in 0..<timers.count {
-            if (timers[safe: i]?.duration ?? 1) <= 0 {
-                timers.remove(at: i)
-                let indexPath = IndexPath(item: i, section: 0)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
         }
     }
 }
@@ -135,6 +130,18 @@ extension TimerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.text = ""
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let maxLength = 20
+        let currentString = (textField.text ?? "") as NSString
+        let newString =
+            currentString.replacingCharacters(in: range, with: string) as NSString
+        return newString.length <= maxLength
     }
 }
 
