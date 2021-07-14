@@ -70,14 +70,12 @@ class TimerTableViewCell: UITableViewCell {
         }
         
         if timer.isTimerRunning {
-            timer.duration -= 1
+            timer.duration -= 0.1
             
-            let time = timer.duration
-            
-            if time >= 0 {
-                let hours = time / 3600
-                let minutes = time / 60 % 60
-                let seconds = time % 60
+            if timer.duration >= 0 {
+                let hours = Int(timer.duration) / 3600
+                let minutes = Int(timer.duration) / 60 % 60
+                let seconds = Int(timer.duration) % 60
                 
                 var times: [String] = []
                 

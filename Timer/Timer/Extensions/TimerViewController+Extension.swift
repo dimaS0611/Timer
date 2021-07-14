@@ -16,7 +16,8 @@ extension TimerViewController: UITableViewDelegate {
             return
         }
         
-        cell.updateState()
+            cell.updateState()
+        
     }
 }
 
@@ -80,7 +81,7 @@ extension TimerViewController {
     
     func createTimer() {
         if timer == nil {
-            let timer = Timer(timeInterval: 1.0,
+            let timer = Timer(timeInterval: 0.1,
                               target: self,
                               selector: #selector(updateTimer),
                               userInfo: nil,
@@ -100,28 +101,20 @@ extension TimerViewController {
         for indexPath in visibleRowsIndexPaths {
             if let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell {
                 cell.updateTime()
+                
+                var deleteIndexPath: [IndexPath] = []
+                if (cell.timer?.duration ?? 1) <= 0 {
+                    let rowIdx = self.timers.firstIndex(where: { $0 == cell.timer && !$0.isTimerRunning })
+                    self.timers.remove(at: rowIdx ?? 0)
+                    deleteIndexPath.append(IndexPath(row: rowIdx ?? 0, section: 0))
+                    
+                    self.tableView.beginUpdates()
+                    self.tableView.deleteRows(at: deleteIndexPath, with: .right)
+                    self.tableView.endUpdates()
+                }
             }
         }
         
-        deleteTimerIfNeeded()
-    }
-}
-
-// MARK: -Deletting timer
-extension TimerViewController {
-    
-    func deleteTimerIfNeeded() {
-        for i in 0..<timers.count {
-            if (timers[safe: i]?.duration ?? 1) <= 0 {
-                timers.remove(at: i)
-                let indexPath = IndexPath(item: i, section: 0)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
 }
 
