@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - UITableViewDelegate
 extension TimerViewController: UITableViewDelegate {
-   
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? TimerTableViewCell else {
             return
@@ -22,7 +22,7 @@ extension TimerViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension TimerViewController: UITableViewDataSource {
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         timers.count
     }
@@ -44,7 +44,7 @@ extension TimerViewController: UITableViewDataSource {
 
 // MARK: - Adding timer
 extension TimerViewController {
-  
+    
     @objc func addTimer() {
         createTimer()
         
@@ -60,9 +60,9 @@ extension TimerViewController {
                 let timer = TimerModel(name: name, duration: duration)
                 
                 self.timers.append(timer)
-            
+                
                 self.timers.sort(by: { $0.duration > $1.duration })
-            
+                
                 let indexPath = IndexPath(row: self.timers.count - 1, section: 0)
                 
                 self.tableView.beginUpdates()
@@ -77,7 +77,7 @@ extension TimerViewController {
 
 // MARK: - Timer
 extension TimerViewController {
-   
+    
     func createTimer() {
         if timer == nil {
             let timer = Timer(timeInterval: 1.0,
@@ -127,7 +127,7 @@ extension TimerViewController {
 
 //MARK: -TextFieldDelegate
 extension TimerViewController: UITextFieldDelegate {
-   
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
