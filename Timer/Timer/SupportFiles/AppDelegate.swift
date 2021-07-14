@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let navigationController = UINavigationController()
-        let viweController = ViewController()
+        let viweController = TimerViewController()
         
         navigationController.viewControllers = [viweController]
         
