@@ -11,7 +11,7 @@ class TimerTableViewCell: UITableViewCell {
     
     private let timerValueLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 15)
         
         return label
@@ -19,7 +19,7 @@ class TimerTableViewCell: UITableViewCell {
     
     private let timerNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 15)
         
         return label
