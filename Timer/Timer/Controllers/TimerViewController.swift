@@ -30,8 +30,12 @@ class TimerViewController: UIViewController {
         safeArea = view.layoutMarginsGuide
         
         self.tableView.register(TimerTableViewCell.self, forCellReuseIdentifier: "TimerCell")
+       
         tableView.dataSource = self
         tableView.delegate = self
+        
+        timerNameTextField.delegate = self
+        timerDurationTextField.delegate = self
         
         setupAddingTimerView()
         

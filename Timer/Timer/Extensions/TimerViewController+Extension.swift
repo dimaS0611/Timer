@@ -48,14 +48,14 @@ extension TimerViewController {
     @objc func addTimer() {
         createTimer()
         
-        var name = timerNameTextField.text ?? "Timer"
+        let name = timerNameTextField.text ?? "Timer"
         
         if name == "" {
-            name = "Timer"
+            showAlertWith(title: "Failed to add new timer", message: "Timer's name cannot be empty")
+            return
         }
         
         if let duration = Int(timerDurationTextField.text ?? "0") {
-            
             DispatchQueue.main.async {
                 let timer = TimerModel(name: name, duration: duration)
                 
@@ -68,14 +68,8 @@ extension TimerViewController {
                 self.tableView.endUpdates()
             }
         } else {
-            let alertController = UIAlertController(title: "Failed to add new timer", message: "The timer's time is incorrect", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            
-            alertController.addAction(alertAction)
-            
-            present(alertController, animated: true, completion: nil)
+            showAlertWith(title: "Failed to add new timer", message: "Timer's duration is incorrect")
         }
-        
     }
 }
 
@@ -122,6 +116,29 @@ extension TimerViewController {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         }
+    }
+}
+
+//MARK: -TextFieldDelegate
+extension TimerViewController: UITextFieldDelegate {
+   
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+// MARK: -Alert
+extension TimerViewController {
+    
+    func showAlertWith(title: String, message: String) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+        present(ac, animated: true)
     }
 }
 
