@@ -60,7 +60,9 @@ extension TimerViewController {
                 let timer = TimerModel(name: name, duration: duration)
                 
                 self.timers.append(timer)
-                
+            
+                self.timers.sort(by: { $0.duration > $1.duration })
+            
                 let indexPath = IndexPath(row: self.timers.count - 1, section: 0)
                 
                 self.tableView.beginUpdates()
@@ -115,6 +117,10 @@ extension TimerViewController {
                 let indexPath = IndexPath(item: i, section: 0)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
+        }
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
 }
